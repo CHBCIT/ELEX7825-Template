@@ -17,7 +17,10 @@ CRobot::CRobot()
 	cv::namedWindow(CANVAS_NAME);
 	cvui::init(CANVAS_NAME);
 
-  ///////////////////////////////////////////////
+	Vec3d t = (0, 0, 0);
+	createHT(t, t);
+
+  	///////////////////////////////////////////////
 	// uArm setup
 
 	//uarm.init_com("COM4");
@@ -31,7 +34,34 @@ CRobot::~CRobot()
 // Create Homogeneous Transformation Matrix
 Mat CRobot::createHT(Vec3d t, Vec3d r)
 {
-	return (Mat1f(4, 4) << 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
+	Mat rot = Mat::zeros(3, 3, CV_32S);
+	Mat trn = Mat::zeros(3, 1, CV_32S);
+	Mat T = Mat::zeros(4, 4, CV_32S);
+	T.at<int>(3, 3) = 1;
+
+	trn = t;	// Assigns t to translation matrix
+
+	int g = r[0];
+	int b = r[1];
+	int a = r[2];
+	
+	rot.at<int>(0, 0) = cos(a)*cos(b);	//cacB
+	rot.at<int>(0, 1) = cos(a) * sin(b) * sin(g) - sin(a) * cos(g); //casBsg - sacg
+ 	rot.at<int>(0, 2) = cos(a) * sin(b) * cos(g) + sin(a) * sin(g); //casBcg + sasg
+
+	rot.at<int>(1, 0) = sin(a) * cos(b);//sacB
+	rot.at<int>(1, 1) = sin(a) * sin(b) * sin(g) + cos(a) * cos(g);//sasBsg + cacg
+	rot.at<int>(1, 2) = sin(a) * sin(b);//sasBcg - casg
+	
+	rot.at<int>(2, 0) = -sin(b);//-sB
+	rot.at<int>(2, 1) = cos(b)*sin(g);//cBsg
+	rot.at<int>(2, 2) = cos(b)*cos(g);//cBcg
+
+	
+
+	for (int i = 0; i < 4; i++) T.at<int>(i, 3) = trn.at<int>(i);
+
+	return T;
 }
 
 std::vector<Mat> CRobot::createBox(float w, float h, float d)
@@ -65,6 +95,19 @@ std::vector<Mat> CRobot::createCoord()
 	return coord;
 }
 
+void CRobot::drawCoord(Mat& im, std::vector<Mat> coord3d)
+{
+	Point2f O, X, Y, Z;
+
+	_virtualcam.transform_to_image(coord3d.at(0), O);
+	_virtualcam.transform_to_image(coord3d.at(1), X);
+	_virtualcam.transform_to_image(coord3d.at(2), Y);
+	_virtualcam.transform_to_image(coord3d.at(3), Z);
+
+	line(im, O, X, CV_RGB(255, 0, 0), 1); // X=RED
+	line(im, O, Y, CV_RGB(0, 255, 0), 1); // Y=GREEN
+	line(im, O, Z, CV_RGB(0, 0, 255), 1); // Z=BLUE
+}
 
 void CRobot::transformPoints(std::vector<Mat>& points, Mat T)
 {
@@ -93,20 +136,6 @@ void CRobot::drawBox(Mat& im, std::vector<Mat> box3d, Scalar colour)
 	}
 }
 
-void CRobot::drawCoord(Mat& im, std::vector<Mat> coord3d)
-{
-	Point2f O, X, Y, Z;
-
-	_virtualcam.transform_to_image(coord3d.at(0), O);
-	_virtualcam.transform_to_image(coord3d.at(1), X);
-	_virtualcam.transform_to_image(coord3d.at(2), Y);
-	_virtualcam.transform_to_image(coord3d.at(3), Z);
-
-	line(im, O, X, CV_RGB(255, 0, 0), 1); // X=RED
-	line(im, O, Y, CV_RGB(0, 255, 0), 1); // Y=GREEN
-	line(im, O, Z, CV_RGB(0, 0, 255), 1); // Z=BLUE
-}
-
 void CRobot::create_simple_robot()
 {
 
@@ -117,6 +146,7 @@ void CRobot::draw_simple_robot()
 	_canvas = cv::Mat::zeros(_image_size, CV_8UC3) + CV_RGB(60, 60, 60);
 
 	std::vector<Mat> O = createCoord();
+	drawCoord(_canvas,O);
 
 	_virtualcam.update_settings(_canvas);
 
