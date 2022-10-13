@@ -19,11 +19,12 @@ private:
 	Size _image_size;
 	Mat _canvas;
 
+	////////////////////////////////////
+  // LAB 3
+	
 	vector<vector<Mat>> _simple_robot;
 
 	CCamera _virtualcam;
-
-	//CuArm uarm;
 
 	std::vector<Mat> createBox(float w, float h, float d);
 	std::vector<Mat> createCoord();
@@ -33,20 +34,27 @@ private:
 	void drawBox(Mat& im, std::vector<Mat> box3d, Scalar colour);
 	void drawCoord(Mat& im, std::vector<Mat> coord3d);
 
-public:
-	Mat createHT(Vec3d t, Vec3d r);
+	////////////////////////////////////
+	// LAB 4
 
-	/////////////////////////////
+	////////////////////////////////////
+	// LAB X
+
+	//CuArm uarm;
+
+public:
+	////////////////////////////////////
 	// Lab 3
 
+	Mat createHT(Vec3d t, Vec3d r);
 	void create_simple_robot();
 	void draw_simple_robot();
 
-	/////////////////////////////
+	////////////////////////////////////
 	// Lab 4
 
-	/////////////////////////////
-  // Lab 5
+	////////////////////////////////////
+	// Lab 5
 
 };
 

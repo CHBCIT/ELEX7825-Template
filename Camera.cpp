@@ -48,6 +48,10 @@ void CCamera::init (Size image_size)
 	calculate_extrinsic();
 }
 
+////////////////////////////////////////////////////////////////////////////////////////////////////////
+// LAB3
+////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 void CCamera::calculate_intrinsic()
 {
 	_cam_virtual_intrinsic = (Mat1f(3, 4) << 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0);
@@ -57,6 +61,73 @@ void CCamera::calculate_extrinsic()
 {
 	_cam_virtual_extrinsic = (Mat1f(4, 4) << 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
 }
+
+
+void CCamera::transform_to_image(Mat pt3d_mat, Point2f& pt)
+{
+}
+
+void CCamera::transform_to_image(std::vector<Mat> pts3d_mat, std::vector<Point2f>& pts2d)
+{
+}
+
+void CCamera::update_settings(Mat& im)
+{
+	bool track_board = false;
+	Point _camera_setting_window;
+
+	cvui::window(im, _camera_setting_window.x, _camera_setting_window.y, 200, 350, "Camera Settings");
+
+	_camera_setting_window.x = 5;
+	_camera_setting_window.y = 20;
+	cvui::trackbar(im, _camera_setting_window.x, _camera_setting_window.y, 180, &_cam_setting_f, 1, 20);
+	cvui::text(im, _camera_setting_window.x + 180, _camera_setting_window.y + 20, "F");
+
+	_camera_setting_window.y += 45;
+	cvui::trackbar(im, _camera_setting_window.x, _camera_setting_window.y, 180, &_cam_setting_x, -500, 500);
+	cvui::text(im, _camera_setting_window.x + 180, _camera_setting_window.y + 20, "X");
+
+	_camera_setting_window.y += 45;
+	cvui::trackbar(im, _camera_setting_window.x, _camera_setting_window.y, 180, &_cam_setting_y, -500, 500);
+	cvui::text(im, _camera_setting_window.x + 180, _camera_setting_window.y + 20, "Y");
+
+	_camera_setting_window.y += 45;
+	cvui::trackbar(im, _camera_setting_window.x, _camera_setting_window.y, 180, &_cam_setting_z, -500, 500);
+	cvui::text(im, _camera_setting_window.x + 180, _camera_setting_window.y + 20, "Z");
+
+	_camera_setting_window.y += 45;
+	cvui::trackbar(im, _camera_setting_window.x, _camera_setting_window.y, 180, &_cam_setting_roll, -180, 180);
+	cvui::text(im, _camera_setting_window.x + 180, _camera_setting_window.y + 20, "R");
+
+	_camera_setting_window.y += 45;
+	cvui::trackbar(im, _camera_setting_window.x, _camera_setting_window.y, 180, &_cam_setting_pitch, -180, 180);
+	cvui::text(im, _camera_setting_window.x + 180, _camera_setting_window.y + 20, "P");
+
+	_camera_setting_window.y += 45;
+	cvui::trackbar(im, _camera_setting_window.x, _camera_setting_window.y, 180, &_cam_setting_yaw, -180, 180);
+	cvui::text(im, _camera_setting_window.x + 180, _camera_setting_window.y + 20, "Y");
+
+	_camera_setting_window.y += 45;
+	cvui::checkbox(im, _camera_setting_window.x, _camera_setting_window.y, "Track Board", &track_board);
+
+	_camera_setting_window.y += 45;
+	if (cvui::button(im, _camera_setting_window.x, _camera_setting_window.y, 100, 30, "Reset"))
+	{
+		init(im.size());
+	}
+
+	cvui::update();
+
+	//////////////////////////////
+	// Update camera model
+
+	calculate_intrinsic();
+	calculate_extrinsic();
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////
+// LAB4
+////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 bool CCamera::save_camparam(string filename, Mat& cam, Mat& dist)
 {
@@ -270,66 +341,4 @@ void CCamera::calibrate_board(int cam_id)
 			char key = (char)waitKey(0);
 			if (key == 27) break;
 	}
-}
-
-void CCamera::transform_to_image(Mat pt3d_mat, Point2f& pt)
-{
-}
-
-void CCamera::transform_to_image(std::vector<Mat> pts3d_mat, std::vector<Point2f>& pts2d)
-{
-}
-
-void CCamera::update_settings(Mat &im)
-{
-	bool track_board = false;
-	Point _camera_setting_window;
-
-	cvui::window(im, _camera_setting_window.x, _camera_setting_window.y, 200, 350, "Camera Settings");
-
-	_camera_setting_window.x = 5;
-	_camera_setting_window.y = 20;
-	cvui::trackbar(im, _camera_setting_window.x, _camera_setting_window.y, 180, &_cam_setting_f, 1, 20);
-	cvui::text(im, _camera_setting_window.x + 180, _camera_setting_window.y + 20, "F");
-
-	_camera_setting_window.y += 45;
-	cvui::trackbar(im, _camera_setting_window.x, _camera_setting_window.y, 180, &_cam_setting_x, -500, 500);
-	cvui::text(im, _camera_setting_window.x + 180, _camera_setting_window.y + 20, "X");
-
-	_camera_setting_window.y += 45;
-	cvui::trackbar(im, _camera_setting_window.x, _camera_setting_window.y, 180, &_cam_setting_y, -500, 500);
-	cvui::text(im, _camera_setting_window.x + 180, _camera_setting_window.y + 20, "Y");
-	
-	_camera_setting_window.y += 45;
-	cvui::trackbar(im, _camera_setting_window.x, _camera_setting_window.y, 180, &_cam_setting_z, -500, 500);
-	cvui::text(im, _camera_setting_window.x + 180, _camera_setting_window.y + 20, "Z");
-
-	_camera_setting_window.y += 45;
-	cvui::trackbar(im, _camera_setting_window.x, _camera_setting_window.y, 180, &_cam_setting_roll, -180, 180);
-	cvui::text(im, _camera_setting_window.x + 180, _camera_setting_window.y + 20, "R");
-
-	_camera_setting_window.y += 45;
-	cvui::trackbar(im, _camera_setting_window.x, _camera_setting_window.y, 180, &_cam_setting_pitch, -180, 180);
-	cvui::text(im, _camera_setting_window.x + 180, _camera_setting_window.y + 20, "P");
-
-	_camera_setting_window.y += 45;
-	cvui::trackbar(im, _camera_setting_window.x, _camera_setting_window.y, 180, &_cam_setting_yaw, -180, 180);
-	cvui::text(im, _camera_setting_window.x + 180, _camera_setting_window.y + 20, "Y");
-
-	_camera_setting_window.y += 45;
-	cvui::checkbox(im, _camera_setting_window.x, _camera_setting_window.y, "Track Board", &track_board);
-
-	_camera_setting_window.y += 45;
-	if (cvui::button(im, _camera_setting_window.x, _camera_setting_window.y, 100, 30, "Reset"))
-	{
-		init(im.size());
-	}
-
-	cvui::update();
-
-	//////////////////////////////
-	// Update camera model
-
-	calculate_intrinsic();
-	calculate_extrinsic();
 }
