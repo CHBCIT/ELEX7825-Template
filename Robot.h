@@ -3,7 +3,6 @@
 #include <opencv2/opencv.hpp>
 
 #include "Camera.h"
-#include "uArm.h"
 
 using namespace std;
 using namespace cv;
@@ -18,6 +17,8 @@ public:
 private:
 	Size _image_size;
 	Mat _canvas;
+
+	void init();
 
 	////////////////////////////////////
   // LAB 3
@@ -38,9 +39,11 @@ private:
 	// LAB 4
 
 	////////////////////////////////////
-	// LAB X
-
-	//CuArm uarm;
+	// LAB 5
+	
+	int _do_animate; // Animation state machine
+	
+	void update_settings(Mat& im);
 
 public:
 	////////////////////////////////////
@@ -53,8 +56,16 @@ public:
 	////////////////////////////////////
 	// Lab 4
 
+	void draw();
+
 	////////////////////////////////////
 	// Lab 5
 
+	// void fkine(); // Input joint variables, output end effector pose
+
+	////////////////////////////////////
+	// Lab 6
+
+	// bool ikine(); // Input end effector pose, output joint angles
 };
 

@@ -17,22 +17,24 @@ CRobot::CRobot()
 	cv::namedWindow(CANVAS_NAME);
 	cvui::init(CANVAS_NAME);
 
-  ///////////////////////////////////////////////
-	// uArm setup
-
-	//uarm.init_com("COM4");
-	//uarm.init_robot();
+	init();
 }
 
 CRobot::~CRobot()
 {
 }
 
+void CRobot::init()
+{
+	// reset variables
+	_do_animate = 0;
+}
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 // LAB3
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// Create Homogeneous Transformation Matrix
+// TODO: Create Homogeneous Transformation Matrix
 Mat CRobot::createHT(Vec3d t, Vec3d r)
 {
 	return (Mat1f(4, 4) << 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
@@ -123,6 +125,7 @@ void CRobot::draw_simple_robot()
 	std::vector<Mat> O = createCoord();
 
 	_virtualcam.update_settings(_canvas);
+	update_settings(_canvas);
 
 	cv::imshow(CANVAS_NAME, _canvas);
 }
@@ -131,3 +134,51 @@ void CRobot::draw_simple_robot()
 // LAB4
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+////////////////////////////////////////////////////////////////////////////////////////////////////////
+// LAB5
+////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void CRobot::update_settings(Mat& im)
+{
+	Point _setting_window;
+
+	_setting_window.x = im.size().width - 200;
+	cvui::window(im, _setting_window.x, _setting_window.y, 200, 450, "Robot Settings");
+
+	_setting_window.x += 5;
+	_setting_window.y += 20;
+
+	if (cvui::button(im, _setting_window.x, _setting_window.y, 100, 30, "Animate"))
+	{
+		init();
+		_do_animate = 1;
+	}
+
+	if (_do_animate != 0)
+	{
+		int step_size = 5;
+		if (_do_animate == 1)
+		{
+			// state 1
+			if (1) { _do_animate = 2; }
+		}
+		else if (_do_animate == 2)
+		{
+			// state 2
+			if (1) { _do_animate = 3; }
+		}
+		else if (_do_animate == 3) {
+			if (1) { _do_animate = 0; init(); }
+		}
+	}
+
+	cvui::update();
+}
+
+void CRobot::draw()
+{
+	_virtualcam.update_settings(_canvas);
+	update_settings(_canvas);
+
+	cv::imshow(CANVAS_NAME, _canvas);
+}

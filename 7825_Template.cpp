@@ -51,27 +51,23 @@ void lab4(int cam_id)
 
 void lab5(int cam_id)
 {
-  
+  char exit_key = -1;
+  CRobot robot;
+
+  while (exit_key != 'q')
+  {
+    robot.draw();
+
+    exit_key = waitKey(10);
+  }
 }
 
 void lab6(int cam_id)
-{
-  
+{  
 }
 
 void lab7(int cam_id)
-{
- 
-}
-
-void lab8(int cam_id)
-{
-
-}
-
-void lab9(int cam_id)
-{
-
+{ 
 }
 
 int main(int argc, char* argv[])
@@ -84,13 +80,11 @@ int main(int argc, char* argv[])
     cout << "\n*****************************************************";
     cout << "\n(1) Lab 1 - Coordinate Transforms 2D";
     cout << "\n(2) Lab 2 - Coordinate Transforms 3D";
-    cout << "\n(3) Lab 3 - Virtual Camera";
-    cout << "\n(4) Lab 4 - Camera Calibration";
-    cout << "\n(5) Lab 5 - Forward Kinematics";
-    cout << "\n(6) Lab 6 - Inverse Kinematics";
+    cout << "\n(3) Lab 3 - Virtual Camera (Simple Robot)";
+    cout << "\n(4) Lab 4 - Camera Calibration (Simple Robot AR)";
+    cout << "\n(5) Lab 5 - Forward Kinematics (SCARA Robot)";
+    cout << "\n(6) Lab 6 - Inverse Kinematics (SCARA Robot)";
     cout << "\n(7) Lab 7 - Trajectories";
-    cout << "\n(8) Lab 8 - Object Tracking";
-    cout << "\n(9) Lab 9 - DNN";
     cout << "\n(0) Exit";
     cout << "\n>> ";
 
@@ -104,8 +98,6 @@ int main(int argc, char* argv[])
     case 5: lab5(cam_id); break;
     case 6: lab6(cam_id); break;
     case 7: lab7(cam_id); break;
-    case 8: lab8(cam_id); break;
-    case 9: lab9(cam_id); break;
     }
   }
 

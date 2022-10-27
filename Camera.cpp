@@ -52,21 +52,24 @@ void CCamera::init (Size image_size)
 // LAB3
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+// TODO: Setup camera intrinsic matrix
 void CCamera::calculate_intrinsic()
 {
 	_cam_virtual_intrinsic = (Mat1f(3, 4) << 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0);
 }
 
+// TODO: Setup camera extrinsic matrix
 void CCamera::calculate_extrinsic()
 {
 	_cam_virtual_extrinsic = (Mat1f(4, 4) << 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
 }
 
-
+// TODO: transform single 3D point to 2D image point
 void CCamera::transform_to_image(Mat pt3d_mat, Point2f& pt)
 {
 }
 
+// TODO: transform vector of 3D points to vector of 2D image points
 void CCamera::transform_to_image(std::vector<Mat> pts3d_mat, std::vector<Point2f>& pts2d)
 {
 }
@@ -116,7 +119,8 @@ void CCamera::update_settings(Mat& im)
 		init(im.size());
 	}
 
-	cvui::update();
+	// Use this line if only this settings window in use
+	// cvui::update();
 
 	//////////////////////////////
 	// Update camera model
