@@ -2,7 +2,7 @@
 
 #include <opencv2/opencv.hpp>
 
-#include "Camera.h"
+#include "CameraVirtual.h"
 
 using namespace std;
 using namespace cv;
@@ -25,7 +25,7 @@ private:
 	
 	vector<vector<Mat>> _simple_robot;
 
-	CCamera _virtualcam;
+	CCameraVirtual _virtualcam;
 
 	std::vector<Mat> createBox(float w, float h, float d);
 	std::vector<Mat> createCoord();
