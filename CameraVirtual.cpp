@@ -77,7 +77,7 @@ void CCameraVirtual::update_settings(Mat& im)
 	bool track_board = false;
 	Point _camera_setting_window;
 
-	cvui::window(im, _camera_setting_window.x, _camera_setting_window.y, 200, 370, "Virtual Camera Settings");
+	cvui::window(im, _camera_setting_window.x, _camera_setting_window.y, 200, 375, "Virtual Camera Settings");
 
 	_camera_setting_window.x = 5;
 	_camera_setting_window.y = 20;
