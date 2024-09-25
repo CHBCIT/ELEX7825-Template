@@ -11,8 +11,6 @@ using namespace cv;
 using namespace dnn;
 using namespace aruco;
 
-#include <opencv2/face/facemark.hpp>
-
 // Add simple GUI elements
 #define CVUI_DISABLE_COMPILATION_NOTICES
 #define CVUI_IMPLEMENTATION

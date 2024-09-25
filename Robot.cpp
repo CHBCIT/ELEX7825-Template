@@ -3,8 +3,6 @@
 #include "Robot.h"
 #include <cmath>
 
-#include <opencv2/aruco/charuco.hpp>
-
 #include "cvui.h"
 
 CRobot::CRobot()
