@@ -89,6 +89,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="CameraReal.h" />
     <ClInclude Include="CameraVirtual.h" />
     <ClInclude Include="cvui.h" />
     <ClInclude Include="Robot.h" />
@@ -96,6 +97,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="7825_Template.cpp" />
+    <ClCompile Include="CameraReal.cpp" />
     <ClCompile Include="CameraVirtual.cpp" />
     <ClCompile Include="Robot.cpp" />
     <ClCompile Include="stdafx.cpp">

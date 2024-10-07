@@ -86,7 +86,10 @@ void CRobot::drawBox(Mat& im, std::vector<Mat> box3d, Scalar colour)
 	float draw_box1[] = { 0,1,2,3,4,5,6,7,0,1,2,3 };
 	float draw_box2[] = { 1,2,3,0,5,6,7,4,4,5,6,7 };
 
+	// If Virtual Camera
 	_virtualcam.transform_to_image(box3d, box2d);
+	// If Real Camera
+	//_realcam.transform_to_image();
 
 	for (int i = 0; i < 12; i++)
 	{
@@ -101,10 +104,14 @@ void CRobot::drawCoord(Mat& im, std::vector<Mat> coord3d)
 {
 	Point2f O, X, Y, Z;
 
+	// If Virtual Camera
 	_virtualcam.transform_to_image(coord3d.at(0), O);
 	_virtualcam.transform_to_image(coord3d.at(1), X);
 	_virtualcam.transform_to_image(coord3d.at(2), Y);
 	_virtualcam.transform_to_image(coord3d.at(3), Z);
+
+	// If Real Camera
+	//_realcam.transform_to_image();
 
 	line(im, O, X, CV_RGB(255, 0, 0), 1); // X=RED
 	line(im, O, Y, CV_RGB(0, 255, 0), 1); // Y=GREEN
@@ -118,11 +125,17 @@ void CRobot::create_simple_robot()
 
 void CRobot::draw_simple_robot()
 {
+	Mat im;
+
 	_canvas = cv::Mat::zeros(_image_size, CV_8UC3) + CV_RGB(60, 60, 60);
 
 	std::vector<Mat> O = createCoord();
 
+	//_realcam.get_image(im);
+	//im.copyTo(_canvas);
+
 	_virtualcam.update_settings(_canvas);
+	//_realcam.update_settings(_canvas);
 	update_settings(_canvas);
 
 	cv::imshow(CANVAS_NAME, _canvas);
